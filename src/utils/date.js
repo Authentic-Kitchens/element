@@ -23,9 +23,8 @@
  * SOFTWARE.
  */
 
-/*eslint-disable*/
 // 把 YYYY-MM-DD 改成了 yyyy-MM-dd
-(function (main) {
+;(function(main) {
   'use strict';
 
   /**
@@ -39,11 +38,10 @@
   var fourDigits = '\\d{4}';
   var word = '[^\\s]+';
   var literal = /\[([^]*?)\]/gm;
-  var noop = function () {
-  };
+  var noop = function() {};
 
   function regexEscape(str) {
-    return str.replace( /[|\\{()[^$+*?.-]/g, '\\$&');
+    return str.replace(/[|\\{()[^$+*?.-]/g, '\\$&');
   }
 
   function shorten(arr, sLen) {
@@ -55,8 +53,10 @@
   }
 
   function monthUpdate(arrName) {
-    return function (d, v, i18n) {
-      var index = i18n[arrName].indexOf(v.charAt(0).toUpperCase() + v.substr(1).toLowerCase());
+    return function(d, v, i18n) {
+      var index = i18n[arrName].indexOf(
+        v.charAt(0).toUpperCase() + v.substr(1).toLowerCase()
+      );
       if (~index) {
         d.month = index;
       }
@@ -72,8 +72,29 @@
     return val;
   }
 
-  var dayNames = ['Sunday', 'Monday', 'Tuesday', 'Wednesday', 'Thursday', 'Friday', 'Saturday'];
-  var monthNames = ['January', 'February', 'March', 'April', 'May', 'June', 'July', 'August', 'September', 'October', 'November', 'December'];
+  var dayNames = [
+    'Sunday',
+    'Monday',
+    'Tuesday',
+    'Wednesday',
+    'Thursday',
+    'Friday',
+    'Saturday'
+  ];
+  var monthNames = [
+    'January',
+    'February',
+    'March',
+    'April',
+    'May',
+    'June',
+    'July',
+    'August',
+    'September',
+    'October',
+    'November',
+    'December'
+  ];
   var monthNamesShort = shorten(monthNames, 3);
   var dayNamesShort = shorten(dayNames, 3);
   fecha.i18n = {
@@ -83,7 +104,12 @@
     monthNames: monthNames,
     amPm: ['am', 'pm'],
     DoFn: function DoFn(D) {
-      return D + ['th', 'st', 'nd', 'rd'][D % 10 > 3 ? 0 : (D - D % 10 !== 10) * D % 10];
+      return (
+        D +
+        ['th', 'st', 'nd', 'rd'][
+          D % 10 > 3 ? 0 : ((D - (D % 10) !== 10) * D) % 10
+        ]
+      );
     }
   };
 
@@ -164,69 +190,115 @@
       return dateObj.getHours() < 12 ? i18n.amPm[0] : i18n.amPm[1];
     },
     A: function(dateObj, i18n) {
-      return dateObj.getHours() < 12 ? i18n.amPm[0].toUpperCase() : i18n.amPm[1].toUpperCase();
+      return dateObj.getHours() < 12
+        ? i18n.amPm[0].toUpperCase()
+        : i18n.amPm[1].toUpperCase();
     },
     ZZ: function(dateObj) {
       var o = dateObj.getTimezoneOffset();
-      return (o > 0 ? '-' : '+') + pad(Math.floor(Math.abs(o) / 60) * 100 + Math.abs(o) % 60, 4);
+      return (
+        (o > 0 ? '-' : '+') +
+        pad(Math.floor(Math.abs(o) / 60) * 100 + (Math.abs(o) % 60), 4)
+      );
     }
   };
 
   var parseFlags = {
-    d: [twoDigits, function (d, v) {
-      d.day = v;
-    }],
-    Do: [twoDigits + word, function (d, v) {
-      d.day = parseInt(v, 10);
-    }],
-    M: [twoDigits, function (d, v) {
-      d.month = v - 1;
-    }],
-    yy: [twoDigits, function (d, v) {
-      var da = new Date(), cent = +('' + da.getFullYear()).substr(0, 2);
-      d.year = '' + (v > 68 ? cent - 1 : cent) + v;
-    }],
-    h: [twoDigits, function (d, v) {
-      d.hour = v;
-    }],
-    m: [twoDigits, function (d, v) {
-      d.minute = v;
-    }],
-    s: [twoDigits, function (d, v) {
-      d.second = v;
-    }],
-    yyyy: [fourDigits, function (d, v) {
-      d.year = v;
-    }],
-    S: ['\\d', function (d, v) {
-      d.millisecond = v * 100;
-    }],
-    SS: ['\\d{2}', function (d, v) {
-      d.millisecond = v * 10;
-    }],
-    SSS: [threeDigits, function (d, v) {
-      d.millisecond = v;
-    }],
+    d: [
+      twoDigits,
+      function(d, v) {
+        d.day = v;
+      }
+    ],
+    Do: [
+      twoDigits + word,
+      function(d, v) {
+        d.day = parseInt(v, 10);
+      }
+    ],
+    M: [
+      twoDigits,
+      function(d, v) {
+        d.month = v - 1;
+      }
+    ],
+    yy: [
+      twoDigits,
+      function(d, v) {
+        var da = new Date(),
+          cent = +('' + da.getFullYear()).substr(0, 2);
+        d.year = '' + (v > 68 ? cent - 1 : cent) + v;
+      }
+    ],
+    h: [
+      twoDigits,
+      function(d, v) {
+        d.hour = v;
+      }
+    ],
+    m: [
+      twoDigits,
+      function(d, v) {
+        d.minute = v;
+      }
+    ],
+    s: [
+      twoDigits,
+      function(d, v) {
+        d.second = v;
+      }
+    ],
+    yyyy: [
+      fourDigits,
+      function(d, v) {
+        d.year = v;
+      }
+    ],
+    S: [
+      '\\d',
+      function(d, v) {
+        d.millisecond = v * 100;
+      }
+    ],
+    SS: [
+      '\\d{2}',
+      function(d, v) {
+        d.millisecond = v * 10;
+      }
+    ],
+    SSS: [
+      threeDigits,
+      function(d, v) {
+        d.millisecond = v;
+      }
+    ],
     D: [twoDigits, noop],
     ddd: [word, noop],
     MMM: [word, monthUpdate('monthNamesShort')],
     MMMM: [word, monthUpdate('monthNames')],
-    a: [word, function (d, v, i18n) {
-      var val = v.toLowerCase();
-      if (val === i18n.amPm[0]) {
-        d.isPm = false;
-      } else if (val === i18n.amPm[1]) {
-        d.isPm = true;
+    a: [
+      word,
+      function(d, v, i18n) {
+        var val = v.toLowerCase();
+        if (val === i18n.amPm[0]) {
+          d.isPm = false;
+        } else if (val === i18n.amPm[1]) {
+          d.isPm = true;
+        }
       }
-    }],
-    ZZ: ['[^\\s]*?[\\+\\-]\\d\\d:?\\d\\d|[^\\s]*?Z', function (d, v) {
-      var parts = (v + '').match(/([+-]|\d\d)/gi), minutes;
+    ],
+    ZZ: [
+      '[^\\s]*?[\\+\\-]\\d\\d:?\\d\\d|[^\\s]*?Z',
+      function(d, v) {
+        var parts = (v + '').match(/([+-]|\d\d)/gi),
+          minutes;
 
-      if (parts) {
-        minutes = +(parts[1] * 60) + parseInt(parts[2], 10);
-        d.timezoneOffset = parts[0] === '+' ? minutes : -minutes;
+        if (parts) {
+          minutes = +(parts[1] * 60) + parseInt(parts[2], 10);
+          d.timezoneOffset = parts[0] === '+' ? minutes : -minutes;
+        }
       }
-    }]
+    ]
   };
   parseFlags.dd = parseFlags.d;
   parseFlags.dddd = parseFlags.ddd;
@@ -236,7 +308,6 @@
   parseFlags.MM = parseFlags.M;
   parseFlags.ss = parseFlags.s;
   parseFlags.A = parseFlags.a;
-
 
   // Some common format strings
   fecha.masks = {
@@ -250,20 +321,23 @@
     longTime: 'HH:mm:ss.SSS'
   };
 
-  /***
+  /** *
    * Format a date
    * @method format
    * @param {Date|number} dateObj
    * @param {string} mask Format of the date, i.e. 'mm-dd-yy' or 'shortDate'
    */
-  fecha.format = function (dateObj, mask, i18nSettings) {
+  fecha.format = function(dateObj, mask, i18nSettings) {
     var i18n = i18nSettings || fecha.i18n;
 
     if (typeof dateObj === 'number') {
       dateObj = new Date(dateObj);
     }
 
-    if (Object.prototype.toString.call(dateObj) !== '[object Date]' || isNaN(dateObj.getTime())) {
+    if (
+      Object.prototype.toString.call(dateObj) !== '[object Date]' ||
+      isNaN(dateObj.getTime())
+    ) {
       throw new Error('Invalid Date in fecha.format');
     }
 
@@ -277,8 +351,10 @@
       return '@@@';
     });
     // Apply formatting rules
-    mask = mask.replace(token, function ($0) {
-      return $0 in formatFlags ? formatFlags[$0](dateObj, i18n) : $0.slice(1, $0.length - 1);
+    mask = mask.replace(token, function($0) {
+      return $0 in formatFlags
+        ? formatFlags[$0](dateObj, i18n)
+        : $0.slice(1, $0.length - 1);
     });
     // Inline literal values back into the formatted value
     return mask.replace(/@@@/g, function() {
@@ -293,7 +369,7 @@
    * @param {string} format Date parse format
    * @returns {Date|boolean}
    */
-  fecha.parse = function (dateStr, format, i18nSettings) {
+  fecha.parse = function(dateStr, format, i18nSettings) {
     var i18n = i18nSettings || fecha.i18n;
 
     if (typeof format !== 'string') {
@@ -315,7 +391,7 @@
       literals.push($1);
       return '@@@';
     });
-    var newFormat = regexEscape(format).replace(token, function ($0) {
+    var newFormat = regexEscape(format).replace(token, function($0) {
       if (parseFlags[$0]) {
         var info = parseFlags[$0];
         parseInfo.push(info[1]);
@@ -337,7 +413,11 @@
     }
 
     var today = new Date();
-    if (dateInfo.isPm === true && dateInfo.hour != null && +dateInfo.hour !== 12) {
+    if (
+      dateInfo.isPm === true &&
+      dateInfo.hour != null &&
+      +dateInfo.hour !== 12
+    ) {
       dateInfo.hour = +dateInfo.hour + 12;
     } else if (dateInfo.isPm === false && +dateInfo.hour === 12) {
       dateInfo.hour = 0;
@@ -346,11 +426,27 @@
     var date;
     if (dateInfo.timezoneOffset != null) {
       dateInfo.minute = +(dateInfo.minute || 0) - +dateInfo.timezoneOffset;
-      date = new Date(Date.UTC(dateInfo.year || today.getFullYear(), dateInfo.month || 0, dateInfo.day || 1,
-        dateInfo.hour || 0, dateInfo.minute || 0, dateInfo.second || 0, dateInfo.millisecond || 0));
+      date = new Date(
+        Date.UTC(
+          dateInfo.year || today.getFullYear(),
+          dateInfo.month || 0,
+          dateInfo.day || 1,
+          dateInfo.hour || 0,
+          dateInfo.minute || 0,
+          dateInfo.second || 0,
+          dateInfo.millisecond || 0
+        )
+      );
     } else {
-      date = new Date(dateInfo.year || today.getFullYear(), dateInfo.month || 0, dateInfo.day || 1,
-        dateInfo.hour || 0, dateInfo.minute || 0, dateInfo.second || 0, dateInfo.millisecond || 0);
+      date = new Date(
+        dateInfo.year || today.getFullYear(),
+        dateInfo.month || 0,
+        dateInfo.day || 1,
+        dateInfo.hour || 0,
+        dateInfo.minute || 0,
+        dateInfo.second || 0,
+        dateInfo.millisecond || 0
+      );
     }
     return date;
   };
@@ -359,7 +455,7 @@
   if (typeof module !== 'undefined' && module.exports) {
     module.exports = fecha;
   } else if (typeof define === 'function' && define.amd) {
-    define(function () {
+    define(function() {
       return fecha;
     });
   } else {
