@@ -1,6 +1,6 @@
-var aria = aria || {};
+var aria = aria || {}
 
-aria.Utils = aria.Utils || {};
+aria.Utils = aria.Utils || {}
 
 /**
  * @desc Set focus on descendant nodes until the first focusable element is
@@ -10,15 +10,18 @@ aria.Utils = aria.Utils || {};
  * @returns
  *  true if a focusable element is found and focus is set.
  */
-aria.Utils.focusFirstDescendant = function(element) {
+aria.Utils.focusFirstDescendant = function (element) {
   for (var i = 0; i < element.childNodes.length; i++) {
-    var child = element.childNodes[i];
-    if (aria.Utils.attemptFocus(child) || aria.Utils.focusFirstDescendant(child)) {
-      return true;
+    var child = element.childNodes[i]
+    if (
+      aria.Utils.attemptFocus(child) ||
+      aria.Utils.focusFirstDescendant(child)
+    ) {
+      return true
     }
   }
-  return false;
-};
+  return false
+}
 
 /**
  * @desc Find the last descendant node that is focusable.
@@ -28,15 +31,18 @@ aria.Utils.focusFirstDescendant = function(element) {
  *  true if a focusable element is found and focus is set.
  */
 
-aria.Utils.focusLastDescendant = function(element) {
+aria.Utils.focusLastDescendant = function (element) {
   for (var i = element.childNodes.length - 1; i >= 0; i--) {
-    var child = element.childNodes[i];
-    if (aria.Utils.attemptFocus(child) || aria.Utils.focusLastDescendant(child)) {
-      return true;
+    var child = element.childNodes[i]
+    if (
+      aria.Utils.attemptFocus(child) ||
+      aria.Utils.focusLastDescendant(child)
+    ) {
+      return true
     }
   }
-  return false;
-};
+  return false
+}
 
 /**
  * @desc Set Attempt to set focus on the current node.
@@ -45,41 +51,43 @@ aria.Utils.focusLastDescendant = function(element) {
  * @returns
  *  true if element is focused.
  */
-aria.Utils.attemptFocus = function(element) {
+aria.Utils.attemptFocus = function (element) {
   if (!aria.Utils.isFocusable(element)) {
-    return false;
+    return false
   }
-  aria.Utils.IgnoreUtilFocusChanges = true;
+  aria.Utils.IgnoreUtilFocusChanges = true
   try {
-    element.focus();
-  } catch (e) {
-  }
-  aria.Utils.IgnoreUtilFocusChanges = false;
-  return (document.activeElement === element);
-};
+    element.focus()
+  } catch (e) {}
+  aria.Utils.IgnoreUtilFocusChanges = false
+  return document.activeElement === element
+}
 
-aria.Utils.isFocusable = function(element) {
-  if (element.tabIndex > 0 || (element.tabIndex === 0 && element.getAttribute('tabIndex') !== null)) {
-    return true;
+aria.Utils.isFocusable = function (element) {
+  if (
+    element.tabIndex > 0 ||
+    (element.tabIndex === 0 && element.getAttribute('tabIndex') !== null)
+  ) {
+    return true
   }
 
   if (element.disabled) {
-    return false;
+    return false
   }
 
   switch (element.nodeName) {
     case 'A':
-      return !!element.href && element.rel !== 'ignore';
+      return !!element.href && element.rel !== 'ignore'
     case 'INPUT':
-      return element.type !== 'hidden' && element.type !== 'file';
+      return element.type !== 'hidden' && element.type !== 'file'
     case 'BUTTON':
     case 'SELECT':
     case 'TEXTAREA':
-      return true;
+      return true
     default:
-      return false;
+      return false
   }
-};
+}
 
 /**
  * 触发一个事件
@@ -88,25 +96,23 @@ aria.Utils.isFocusable = function(element) {
  * @param  {String} name
  * @param  {*} opts
  */
-aria.Utils.triggerEvent = function(elm, name, ...opts) {
-  let eventName;
+aria.Utils.triggerEvent = function (elm, name, ...opts) {
+  let eventName
 
   if (/^mouse|click/.test(name)) {
-    eventName = 'MouseEvents';
+    eventName = 'MouseEvents'
   } else if (/^key/.test(name)) {
-    eventName = 'KeyboardEvent';
+    eventName = 'KeyboardEvent'
   } else {
-    eventName = 'HTMLEvents';
+    eventName = 'HTMLEvents'
   }
-  const evt = document.createEvent(eventName);
+  const evt = document.createEvent(eventName)
 
-  evt.initEvent(name, ...opts);
-  elm.dispatchEvent
-    ? elm.dispatchEvent(evt)
-    : elm.fireEvent('on' + name, evt);
+  evt.initEvent(name, ...opts)
+  elm.dispatchEvent ? elm.dispatchEvent(evt) : elm.fireEvent('on' + name, evt)
 
-  return elm;
-};
+  return elm
+}
 
 aria.Utils.keys = {
   tab: 9,
@@ -117,6 +123,6 @@ aria.Utils.keys = {
   right: 39,
   down: 40,
   esc: 27
-};
+}
 
-export default aria.Utils;
+export default aria.Utils

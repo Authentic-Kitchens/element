@@ -1,12 +1,12 @@
-import { createVue, destroyVM } from '../util';
+import { createVue, destroyVM } from '../util'
 
 describe('Breadcrumb', () => {
-  let vm;
+  let vm
   afterEach(() => {
-    destroyVM(vm);
-  });
+    destroyVM(vm)
+  })
 
-  it('create', done => {
+  it('create', (done) => {
     vm = createVue(`
       <el-breadcrumb separator=">">
         <el-breadcrumb-item to="/">首页</el-breadcrumb-item>
@@ -14,10 +14,12 @@ describe('Breadcrumb', () => {
         <el-breadcrumb-item>活动列表</el-breadcrumb-item>
         <el-breadcrumb-item>活动详情</el-breadcrumb-item>
       </el-breadcrumb>
-    `);
-    vm.$nextTick(_ => {
-      expect(vm.$el.querySelector('.el-breadcrumb__separator').innerText).to.equal('>');
-      done();
-    });
-  });
-});
+    `)
+    vm.$nextTick((_) => {
+      expect(
+        vm.$el.querySelector('.el-breadcrumb__separator').innerText
+      ).to.equal('>')
+      done()
+    })
+  })
+})

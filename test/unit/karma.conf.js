@@ -1,6 +1,6 @@
-const webpackConfig = require('../../build/webpack.test');
+const webpackConfig = require('../../build/webpack.test')
 
-module.exports = function(config) {
+module.exports = function (config) {
   const configuration = {
     browsers: ['ChromeHeadless'],
     frameworks: ['mocha', 'sinon-chai'],
@@ -15,17 +15,14 @@ module.exports = function(config) {
     },
     coverageReporter: {
       dir: './coverage',
-      reporters: [
-        { type: 'lcov', subdir: '.' },
-        { type: 'text-summary' }
-      ]
+      reporters: [{ type: 'lcov', subdir: '.' }, { type: 'text-summary' }]
     },
     client: {
       mocha: {
         timeout: 4000
       }
     }
-  };
+  }
 
-  config.set(configuration);
-};
+  config.set(configuration)
+}

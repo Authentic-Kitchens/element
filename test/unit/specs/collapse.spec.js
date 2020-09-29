@@ -1,19 +1,20 @@
-import { createVue, destroyVM } from '../util';
+import { createVue, destroyVM } from '../util'
 
 describe('Collapse', () => {
-  let vm;
+  let vm
   afterEach(() => {
-    destroyVM(vm);
-  });
+    destroyVM(vm)
+  })
 
-  it('create', done => {
-    vm = createVue({
-      data() {
-        return {
-          activeNames: ['1']
-        };
-      },
-      template: `
+  it('create', (done) => {
+    vm = createVue(
+      {
+        data() {
+          return {
+            activeNames: ['1']
+          }
+        },
+        template: `
         <el-collapse v-model="activeNames" ref="collapse">
           <el-collapse-item title="一致性 Consistency" name="1" ref="item1">
             <div>与现实生活一致：与现实生活的流程、逻辑保持一致，遵循用户习惯的语言和概念；</div>
@@ -34,31 +35,34 @@ describe('Collapse', () => {
           </el-collapse-item>
         </el-collapse>
       `
-    }, true);
-
-    expect(vm.$refs.item1.isActive).to.be.true;
-    vm.$refs.item3.$el.querySelector('.el-collapse-item__header').click();
-    vm.$nextTick(_ => {
-      expect(vm.$refs.item1.isActive).to.be.true;
-      expect(vm.$refs.item3.isActive).to.be.true;
-
-      vm.$refs.item1.$el.querySelector('.el-collapse-item__header').click();
-
-      vm.$nextTick(_ => {
-        expect(vm.$refs.item1.isActive).to.be.false;
-        done();
-      });
-    });
-  });
-
-  it('accordion', done => {
-    vm = createVue({
-      data() {
-        return {
-          activeNames: ['1']
-        };
       },
-      template: `
+      true
+    )
+
+    expect(vm.$refs.item1.isActive).to.be.true
+    vm.$refs.item3.$el.querySelector('.el-collapse-item__header').click()
+    vm.$nextTick((_) => {
+      expect(vm.$refs.item1.isActive).to.be.true
+      expect(vm.$refs.item3.isActive).to.be.true
+
+      vm.$refs.item1.$el.querySelector('.el-collapse-item__header').click()
+
+      vm.$nextTick((_) => {
+        expect(vm.$refs.item1.isActive).to.be.false
+        done()
+      })
+    })
+  })
+
+  it('accordion', (done) => {
+    vm = createVue(
+      {
+        data() {
+          return {
+            activeNames: ['1']
+          }
+        },
+        template: `
         <el-collapse accordion v-model="activeNames" ref="collapse">
           <el-collapse-item title="一致性 Consistency" name="1" ref="item1">
             <div>与现实生活一致：与现实生活的流程、逻辑保持一致，遵循用户习惯的语言和概念；</div>
@@ -79,25 +83,28 @@ describe('Collapse', () => {
           </el-collapse-item>
         </el-collapse>
       `
-    }, true);
-
-    expect(vm.$refs.item1.isActive).to.be.true;
-    vm.$refs.item3.$el.querySelector('.el-collapse-item__header').click();
-    vm.$nextTick(_ => {
-      expect(vm.$refs.item1.isActive).to.be.false;
-      expect(vm.$refs.item3.isActive).to.be.true;
-      done();
-    });
-  });
-
-  it('event:change', done => {
-    vm = createVue({
-      data() {
-        return {
-          activeNames: ['1']
-        };
       },
-      template: `
+      true
+    )
+
+    expect(vm.$refs.item1.isActive).to.be.true
+    vm.$refs.item3.$el.querySelector('.el-collapse-item__header').click()
+    vm.$nextTick((_) => {
+      expect(vm.$refs.item1.isActive).to.be.false
+      expect(vm.$refs.item3.isActive).to.be.true
+      done()
+    })
+  })
+
+  it('event:change', (done) => {
+    vm = createVue(
+      {
+        data() {
+          return {
+            activeNames: ['1']
+          }
+        },
+        template: `
         <el-collapse v-model="activeNames" ref="collapse">
           <el-collapse-item title="一致性 Consistency" name="1" ref="item1">
             <div>与现实生活一致：与现实生活的流程、逻辑保持一致，遵循用户习惯的语言和概念；</div>
@@ -118,13 +125,15 @@ describe('Collapse', () => {
           </el-collapse-item>
         </el-collapse>
       `
-    }, true);
-    const spy = sinon.spy();
-    vm.$refs.collapse.$on('change', spy);
-    vm.$refs.item3.$el.querySelector('.el-collapse-item__header').click();
-    vm.$nextTick(_ => {
-      expect(spy.withArgs().calledOnce).to.be.true;
-      done();
-    });
-  });
-});
+      },
+      true
+    )
+    const spy = sinon.spy()
+    vm.$refs.collapse.$on('change', spy)
+    vm.$refs.item3.$el.querySelector('.el-collapse-item__header').click()
+    vm.$nextTick((_) => {
+      expect(spy.withArgs().calledOnce).to.be.true
+      done()
+    })
+  })
+})

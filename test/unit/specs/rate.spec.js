@@ -1,22 +1,23 @@
-import { createTest, createVue, destroyVM } from '../util';
-import Rate from 'packages/rate';
-import Vue from 'vue';
+import { createTest, createVue, destroyVM } from '../util'
+import Rate from 'packages/rate'
+import Vue from 'vue'
 
 describe('Rate', () => {
-  let vm;
+  let vm
   afterEach(() => {
-    destroyVM(vm);
-  });
+    destroyVM(vm)
+  })
 
   it('create', () => {
-    vm = createTest(Rate, { max: 10 }, true);
-    const stars = vm.$el.querySelectorAll('.el-rate__item');
-    expect(stars.length).to.equal(10);
-  });
+    vm = createTest(Rate, { max: 10 }, true)
+    const stars = vm.$el.querySelectorAll('.el-rate__item')
+    expect(stars.length).to.equal(10)
+  })
 
   it('with texts', () => {
-    vm = createVue({
-      template: `
+    vm = createVue(
+      {
+        template: `
         <div>
           <el-rate
             v-model="value"
@@ -25,190 +26,223 @@ describe('Rate', () => {
         </div>
       `,
 
-      data() {
-        return {
-          value: 4
-        };
-      }
-    }, true);
-    const text = vm.$el.querySelector('.el-rate__text');
-    expect(text.textContent).to.equal('4');
-  });
+        data() {
+          return {
+            value: 4
+          }
+        }
+      },
+      true
+    )
+    const text = vm.$el.querySelector('.el-rate__text')
+    expect(text.textContent).to.equal('4')
+  })
 
-  it('value change', done => {
-    vm = createVue({
-      template: `
+  it('value change', (done) => {
+    vm = createVue(
+      {
+        template: `
         <div>
           <el-rate v-model="value"></el-rate>
         </div>
       `,
 
-      data() {
-        return {
-          value: 0
-        };
-      }
-    }, true);
-    const rate = vm.$children[0];
-    expect(rate.value).to.equal(0);
-    vm.value = 3;
+        data() {
+          return {
+            value: 0
+          }
+        }
+      },
+      true
+    )
+    const rate = vm.$children[0]
+    expect(rate.value).to.equal(0)
+    vm.value = 3
     Vue.nextTick(() => {
-      expect(rate.value).to.equal(3);
-      done();
-    });
-  });
+      expect(rate.value).to.equal(3)
+      done()
+    })
+  })
 
   it('click', () => {
-    vm = createVue({
-      template: `
+    vm = createVue(
+      {
+        template: `
         <div>
           <el-rate v-model="value"></el-rate>
         </div>
       `,
 
-      data() {
-        return {
-          value: 0
-        };
-      }
-    }, true);
-    const thirdStar = vm.$el.querySelectorAll('.el-rate__item')[2];
-    thirdStar.click();
-    expect(vm.value).to.equal(3);
-  });
+        data() {
+          return {
+            value: 0
+          }
+        }
+      },
+      true
+    )
+    const thirdStar = vm.$el.querySelectorAll('.el-rate__item')[2]
+    thirdStar.click()
+    expect(vm.value).to.equal(3)
+  })
 
   it('colors', () => {
-    vm = createVue({
-      template: `
+    vm = createVue(
+      {
+        template: `
         <div>
           <el-rate v-model="value" :colors="['#99A9BF', '#F7BA2A', '#FF9900']"></el-rate>
         </div>
       `,
 
-      data() {
-        return {
-          value: 4
-        };
-      }
-    }, true);
-    const thirdIcon = vm.$el.querySelectorAll('.el-rate__item')[2].querySelector('.el-rate__icon');
-    expect(thirdIcon.style.color).to.equal('rgb(255, 153, 0)');
-  });
+        data() {
+          return {
+            value: 4
+          }
+        }
+      },
+      true
+    )
+    const thirdIcon = vm.$el
+      .querySelectorAll('.el-rate__item')[2]
+      .querySelector('.el-rate__icon')
+    expect(thirdIcon.style.color).to.equal('rgb(255, 153, 0)')
+  })
 
-  it('colors are updated after prop is changed', done => {
-    vm = createVue({
-      template: `
+  it('colors are updated after prop is changed', (done) => {
+    vm = createVue(
+      {
+        template: `
         <div>
           <el-rate v-model="value" :colors="colors"></el-rate>
         </div>
       `,
 
-      computed: {
-        colors() {
-          if (this.muted) {
-            return ['#999', '#999', '#999'];
-          } else {
-            return ['#99A9BF', '#F7BA2A', '#FF9900'];
+        computed: {
+          colors() {
+            if (this.muted) {
+              return ['#999', '#999', '#999']
+            } else {
+              return ['#99A9BF', '#F7BA2A', '#FF9900']
+            }
+          }
+        },
+        data() {
+          return {
+            value: 4,
+            muted: false
           }
         }
       },
-      data() {
-        return {
-          value: 4,
-          muted: false
-        };
-      }
-    }, true);
+      true
+    )
     setTimeout(() => {
-      vm.muted = true;
+      vm.muted = true
       vm.$nextTick(() => {
-        const thirdIcon = vm.$el.querySelectorAll('.el-rate__item')[2].querySelector('.el-rate__icon');
-        expect(thirdIcon.style.color).to.equal('rgb(153, 153, 153)');
-        done();
-      });
-    }, 10);
-  });
+        const thirdIcon = vm.$el
+          .querySelectorAll('.el-rate__item')[2]
+          .querySelector('.el-rate__icon')
+        expect(thirdIcon.style.color).to.equal('rgb(153, 153, 153)')
+        done()
+      })
+    }, 10)
+  })
 
   it('threshold', () => {
-    vm = createVue({
-      template: `
+    vm = createVue(
+      {
+        template: `
         <div>
           <el-rate v-model="value" :low-threshold="3"></el-rate>
         </div>
       `,
 
-      data() {
-        return {
-          value: 3
-        };
-      }
-    }, true);
-    const thirdIcon = vm.$el.querySelectorAll('.el-rate__item')[2].querySelector('.el-rate__icon');
-    expect(thirdIcon.style.color).to.equal('rgb(247, 186, 42)');
-  });
+        data() {
+          return {
+            value: 3
+          }
+        }
+      },
+      true
+    )
+    const thirdIcon = vm.$el
+      .querySelectorAll('.el-rate__item')[2]
+      .querySelector('.el-rate__icon')
+    expect(thirdIcon.style.color).to.equal('rgb(247, 186, 42)')
+  })
 
   it('disabled', () => {
-    const vm1 = createVue({
-      template: `
+    const vm1 = createVue(
+      {
+        template: `
         <div>
           <el-rate v-model="value" disabled show-text></el-rate>
         </div>
       `,
 
-      data() {
-        return {
-          value: 3.7
-        };
-      }
-    }, true);
-    const vm2 = createVue({
-      template: `
+        data() {
+          return {
+            value: 3.7
+          }
+        }
+      },
+      true
+    )
+    const vm2 = createVue(
+      {
+        template: `
         <div>
           <el-rate v-model="value" disabled show-text></el-rate>
         </div>
       `,
 
-      data() {
-        return {
-          value: 3.4
-        };
-      }
-    }, true);
-    const firstStar = vm1.$el.querySelectorAll('.el-rate__item')[0];
-    firstStar.click();
-    vm1.$children[0].resetCurrentValue();
-    expect(vm1.value).to.equal(3.7);
+        data() {
+          return {
+            value: 3.4
+          }
+        }
+      },
+      true
+    )
+    const firstStar = vm1.$el.querySelectorAll('.el-rate__item')[0]
+    firstStar.click()
+    vm1.$children[0].resetCurrentValue()
+    expect(vm1.value).to.equal(3.7)
 
-    const fourthStar = vm2.$el.querySelectorAll('.el-rate__item')[3];
-    const halfStar = fourthStar.querySelector('.el-rate__decimal');
-    expect(halfStar.style.width).to.equal('40%');
-  });
+    const fourthStar = vm2.$el.querySelectorAll('.el-rate__item')[3]
+    const halfStar = fourthStar.querySelector('.el-rate__decimal')
+    expect(halfStar.style.width).to.equal('40%')
+  })
 
   it('allow half', () => {
-    vm = createVue({
-      template: `
+    vm = createVue(
+      {
+        template: `
         <div>
           <el-rate v-model="value" allow-half></el-rate>
         </div>
       `,
 
-      data() {
-        return {
-          value: 0
-        };
-      }
-    }, true);
-    const rate = vm.$children[0];
-    const secondStar = vm.$el.querySelectorAll('.el-rate__item')[1];
-    rate.setCurrentValue(1, { target: secondStar, offsetX: 2 });
-    secondStar.click();
-    rate.resetCurrentValue();
-    expect(vm.value).to.equal(0.5);
-  });
+        data() {
+          return {
+            value: 0
+          }
+        }
+      },
+      true
+    )
+    const rate = vm.$children[0]
+    const secondStar = vm.$el.querySelectorAll('.el-rate__item')[1]
+    rate.setCurrentValue(1, { target: secondStar, offsetX: 2 })
+    secondStar.click()
+    rate.resetCurrentValue()
+    expect(vm.value).to.equal(0.5)
+  })
 
   it('custom icon classes by passing object', () => {
-    vm = createVue({
-      template: `
+    vm = createVue(
+      {
+        template: `
         <div>
           <el-rate
             v-model="value"
@@ -216,14 +250,17 @@ describe('Rate', () => {
         </div>
       `,
 
-      data() {
-        return {
-          value: 4
-        };
-      }
-    }, true);
-    const thirdIcon = vm.$el.querySelectorAll('.el-rate__item')[3].querySelector('.el-rate__icon');
-    expect(thirdIcon.className).to.include('icon-rate-face-3');
-  });
-
-});
+        data() {
+          return {
+            value: 4
+          }
+        }
+      },
+      true
+    )
+    const thirdIcon = vm.$el
+      .querySelectorAll('.el-rate__item')[3]
+      .querySelector('.el-rate__icon')
+    expect(thirdIcon.className).to.include('icon-rate-face-3')
+  })
+})

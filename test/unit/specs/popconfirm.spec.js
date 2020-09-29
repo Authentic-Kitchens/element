@@ -1,14 +1,15 @@
-import { createVue, destroyVM } from '../util';
+import { createVue, destroyVM } from '../util'
 
 describe('Popconfirm', () => {
-  let vm;
+  let vm
   afterEach(() => {
-    destroyVM(vm);
-  });
+    destroyVM(vm)
+  })
 
   describe('trigger', () => {
     const createVM = () => {
-      return createVue(`
+      return createVue(
+        `
         <div>
           <el-popconfirm
             ref="popover"
@@ -16,14 +17,17 @@ describe('Popconfirm', () => {
             <button slot="reference">trigger</button>
           </el-popconfirm>
         </div>
-      `, true);
-    };
+      `,
+        true
+      )
+    }
     it('click', () => {
-      vm = createVM();
-      vm.$el.querySelector('button').click();
-      document.body.click();
-      expect(document.body.querySelector('.el-popconfirm__action').style.display).to.equal('');
-    });
-  });
-
-});
+      vm = createVM()
+      vm.$el.querySelector('button').click()
+      document.body.click()
+      expect(
+        document.body.querySelector('.el-popconfirm__action').style.display
+      ).to.equal('')
+    })
+  })
+})

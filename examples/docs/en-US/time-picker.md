@@ -15,6 +15,7 @@ Provide a list of fixed time for users to choose.
     step: '00:15',
     end: '18:30'
   }"
+  format="hh:mm A"
   placeholder="Select time">
 </el-time-select>
 
