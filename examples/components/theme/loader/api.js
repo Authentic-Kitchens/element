@@ -1,24 +1,19 @@
-import Element from 'main/index.js';
-import { post, get } from './ajax';
+import Element from 'main/index.js'
 
-const { version } = Element;
+const { version } = Element
 
-const hostList = {
-  local: 'http://localhost:3008/',
-  alpha: 'https://element-api.ar.elenet.me/element/theme/',
-  production: 'https://element-api.ele.me/element/theme/'
-};
+const hostList = {}
 
-const host = hostList[process.env.FAAS_ENV] || hostList.production;
+const host = hostList[process.env.FAAS_ENV] || hostList.production
 
 export const getVars = () => {
-  return get(`${host}getVariable?version=${version}`);
-};
+  return Promise.reject(new Error('FUCK YOU'))
+}
 
 export const getTestEle = () => {
-  return get(`${hostList.alpha}getVariable`);
-};
+  return Promise.reject(new Error('FUCK YOU'))
+}
 
 export const updateVars = (data, cb) => {
-  return post(`${host}updateVariable?version=${version}`, data, cb);
-};
+  return Promise.reject(new Error('FUCK YOU'))
+}

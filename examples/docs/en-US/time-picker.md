@@ -11,9 +11,9 @@ Provide a list of fixed time for users to choose.
 <el-time-select
   v-model="value"
   :picker-options="{
-    start: '08:30',
-    step: '00:15',
-    end: '18:30'
+    start: '23:00',
+    step: '00:30',
+    end: '04:00'
   }"
   format="hh:mm A"
   placeholder="Select time">

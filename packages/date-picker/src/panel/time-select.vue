@@ -201,15 +201,39 @@ export default {
       const result = []
 
       if (start && end && step) {
-        let current = start
-        while (compareTime(current, end) <= 0) {
-          result.push({
-            value: current,
-            disabled:
-              compareTime(current, this.minTime || '-1:-1') <= 0 ||
-              compareTime(current, this.maxTime || '100:100') >= 0
-          })
-          current = nextTime(current, step)
+        if (compareTime(start, end) > 0) {
+          let current = start
+          while (compareTime(current, '23:59') <= 0) {
+            result.push({
+              value: current,
+              disabled:
+                compareTime(current, this.minTime || '-1:-1') <= 0 ||
+                compareTime(current, this.maxTime || '100:100') >= 0
+            })
+            current = nextTime(current, step)
+          }
+          // ---
+          current = '00:00'
+          while (compareTime(current, end) <= 0) {
+            result.push({
+              value: current,
+              disabled:
+                compareTime(current, this.minTime || '-1:-1') <= 0 ||
+                compareTime(current, this.maxTime || '100:100') >= 0
+            })
+            current = nextTime(current, step)
+          }
+        } else {
+          let current = start
+          while (compareTime(current, end) <= 0) {
+            result.push({
+              value: current,
+              disabled:
+                compareTime(current, this.minTime || '-1:-1') <= 0 ||
+                compareTime(current, this.maxTime || '100:100') >= 0
+            })
+            current = nextTime(current, step)
+          }
         }
       }
 
